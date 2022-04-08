@@ -1,5 +1,6 @@
 add_executable(app main.c
-                   token.c)
+                   token.c
+                   input.c)
 
 target_include_directories(app PRIVATE ${PROJECT_SOURCE_DIR}/inc
 )
