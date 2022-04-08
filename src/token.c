@@ -17,7 +17,7 @@ int size_of_data(token_type t_type){
     }
 }
 
-token* empty_token(token_type t_type, void* p_data){
+token* empty_token(token_type t_type){
     token* p_token = malloc(sizeof(token));
     if (p_token == NULL)
     {

@@ -1,6 +1,7 @@
 #ifndef PARSER_TOKEN_H
 #define PARSER_TOKEN_H
 
+#include <ctype.h>
 #include <stdbool.h>
 #include <stdlib.h>
 #include <stdio.h>
@@ -26,7 +27,7 @@ typedef struct num_data{
 
 int size_of_data(token_type t_type);
 
-token* empty_token(token_type t_type, void* p_data);
+token* empty_token(token_type t_type);
 
 void free_token(token* p_token);
 
