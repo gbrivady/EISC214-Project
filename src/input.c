@@ -45,12 +45,11 @@ token* token_from_string(char* str){
         }
         strncpy(p_var_data->name, str, size);
         p_var_data->size_name = size+1;
+    } else if(isdigit(str[0])){ // it is a number
+         p_token = empty_token(NUMBER);
+         //printf("%d \n", scanf("%d%s", str));
+         ((num_data*)p_token->data)->value = strtol(str, &str, 10);
     }
-    // } else if(isdigit(str[0])){ // it is a number
-    //     p_token = empty_token(NUMBER);
-    //     printf("%d \n", scanf("%d", str));
-    //     ((num_data*)p_token->data)->value = scanf("%d", str);
-    // }
     
     return p_token;
 }
