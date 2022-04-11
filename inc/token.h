@@ -41,6 +41,7 @@ void print_token_number(token* p_token);
 typedef struct token_list_cell
 {
     token* data;
+    struct token_list_cell* prev;
     struct token_list_cell* next;
 
 } token_list_cell;

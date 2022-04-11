@@ -105,12 +105,14 @@ void print_token_number(token* p_token){
 void append_token(token_list* p_list, token* p_token){
     token_list_cell* new_cell = malloc(sizeof(token_list_cell));
     new_cell->data = p_token;
+    new_cell->prev = NULL;
     new_cell->next = NULL;
     if (p_list->first == NULL)
     {
         p_list->first = new_cell;
         p_list->last = new_cell;
     }else {
+        new_cell->prev = p_list->last;
         p_list->last->next = new_cell;
         p_list->last = new_cell;
     }
