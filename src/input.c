@@ -43,7 +43,7 @@ token* token_from_string(char* str){
             printf("Error : Could not allocate memory for variable name in string_to_token");
             exit(1);
         }
-        strncpy(p_var_data->name, str, size);
+        memcpy(p_var_data->name, str, size);
         p_var_data->size_name = size+1;
     } else if(isdigit(str[0])){ // it is a number
          p_token = empty_token(NUMBER);
