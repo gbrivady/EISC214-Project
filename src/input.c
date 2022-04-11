@@ -8,16 +8,14 @@ token* token_from_string(char* str){
     {
     case '(':
         p_token = empty_token(BRACKET);
-        *(bool*)(p_token->data) = true;
+        *(token_list**)(p_token->data) = read_tokens(str+1);
         break;
     case ')':
-        p_token = empty_token(BRACKET);
-        *(bool*)(p_token->data) = false;
-        break;
+        return NULL;
     case '+':
         p_token = empty_token(OPERATION);
         *(ope_data*)(p_token->data) = ADD;
-        return p_token;
+        break;
     case '-' :
         p_token = empty_token(OPERATION);
         *(ope_data*)(p_token->data) = SUB;
@@ -59,6 +57,7 @@ token_list* read_tokens(char* str){
     token_list* t_list = malloc(sizeof(token_list));
     t_list->first = NULL;
     t_list->last = NULL;
+    int bracket_depth = 0;
 
     while (str != NULL && *str == ' ') // skip spaces at start
     {
@@ -67,17 +66,37 @@ token_list* read_tokens(char* str){
     while (str != NULL && *str != '\0') 
     {
         p_token = token_from_string(str);
+        if (p_token == NULL)
+        {
+            //End of an open bracket
+            return t_list;
+        }
+        
         //shift str for next read
         switch (p_token->t_type)
         {
         case BRACKET:
+            bracket_depth = 1;
             str += 1;
+            while (bracket_depth != 0)
+            {
+                if (*str == '(')
+                {
+                    bracket_depth += 1;
+                }
+                if (*str == ')'){
+                    bracket_depth -=1;
+                }
+                str += 1;
+            }
+            
             break;
         case OPERATION:
             str += 1;
             break;
         case VARIABLE:
-            str += ((var_data*)p_token->data)->size_name;
+            //one less, as the \0 at the end does not exist in the string
+            str += ((var_data*)p_token->data)->size_name-1;
             break;
         case NUMBER:
             //str shift is already done in strtol within token_from_string

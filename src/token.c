@@ -4,7 +4,7 @@ int size_of_data(token_type t_type){
     switch (t_type)
     {
     case BRACKET:
-        return sizeof(bool);
+        return sizeof(token_list*);
     case OPERATION:
         return sizeof(ope_data);
     case VARIABLE:
@@ -38,6 +38,9 @@ void free_token(token* p_token){
     {
         free(((var_data*)p_token->data)->name);
     }
+    if (p_token->t_type == BRACKET){
+        free_token_list(*(token_list**)p_token->data, true);
+    }
     free(p_token->data);
     free(p_token);
 }
@@ -64,14 +67,9 @@ void print_token(token* p_token){
 }
 
 void print_token_bracket(token* p_token){
-    printf("BRACKET:");
-    if (*(bool*)p_token->data)
-    {
-        printf("(");
-    }else
-    {
-        printf(")");
-    } 
+    printf("BRACKET:(");
+    print_token_list(*((token_list**)p_token->data));
+    putchar(')');
 }
 
 void print_token_operation(token* p_token){
@@ -128,12 +126,14 @@ void print_token_list(token_list* p_t_list){
     
 }
 
-void free_token_list(token_list* p_t_list){
+void free_token_list(token_list* p_t_list, bool free_content){
     token_list_cell* cur_cell = p_t_list->first;
     token_list_cell* next_cell;
     while (cur_cell != NULL)
     {
-        free_token(cur_cell->data);
+        if(free_content){
+            free_token(cur_cell->data);
+        }
         next_cell = cur_cell->next;
         free(cur_cell);
         cur_cell = next_cell;

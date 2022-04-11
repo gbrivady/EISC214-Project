@@ -72,19 +72,19 @@ void test_str2tok(){
 void test_token_list(){
     
     printf("Begin testing \"read_tokens\" .... \n");
-    char* str = "3*y+5 *(variable - 37) ";
+    char* str = "   3*y+5(variable - 37) + 74a * e3  ";
     token_list* t_list = read_tokens(str);
     printf("    String successfully read : \n");
     print_token_list(t_list);
     putchar('\n');
-    free_token_list(t_list);
+    free_token_list(t_list, true);
     printf("    - Done \n");
 
 }
 
 int main(int argc, char const *argv[])
 {
-    test_str2tok();
+    //test_str2tok();
     test_token_list();
     return 0;
 }
