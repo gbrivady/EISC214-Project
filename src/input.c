@@ -53,3 +53,86 @@ token* token_from_string(char* str){
     
     return p_token;
 }
+
+token_list* read_tokens(char* str){
+    token* p_token;
+    token_list* t_list = malloc(sizeof(token_list));
+    t_list->first = NULL;
+    t_list->last = NULL;
+
+    while (str != NULL && *str == ' ') // skip spaces at start
+    {
+        str += 1;
+    }
+    while (str != NULL && *str != '\0') 
+    {
+        p_token = token_from_string(str);
+        //shift str for next read
+        switch (p_token->t_type)
+        {
+        case BRACKET:
+            str += 1;
+            break;
+        case OPERATION:
+            str += 1;
+            break;
+        case VARIABLE:
+            str += ((var_data*)p_token->data)->size_name;
+            break;
+        case NUMBER:
+            //str shift is already done in strtol within token_from_string
+            while (isdigit(str[0]))
+            {
+                str += 1;
+            }
+            //no it is not you idiot
+            break;
+        default:
+            break;
+        }
+        append_token(t_list, p_token);
+        while (str != NULL && *str == ' ') // skip spaces after token
+        {
+            str += 1;
+        }
+    }
+    
+    return t_list;
+}
+
+void append_token(token_list* p_list, token* p_token){
+    token_list_cell* new_cell = malloc(sizeof(token_list_cell));
+    new_cell->data = p_token;
+    new_cell->next = NULL;
+    if (p_list->first == NULL)
+    {
+        p_list->first = new_cell;
+        p_list->last = new_cell;
+    }else {
+        p_list->last->next = new_cell;
+        p_list->last = new_cell;
+    }
+}
+
+void print_token_list(token_list* p_t_list){
+    token_list_cell* cur_cell = p_t_list->first;
+    while (cur_cell != NULL)
+    {
+        print_token(cur_cell->data);
+        cur_cell = cur_cell->next;
+    }
+    
+}
+
+void free_token_list(token_list* p_t_list){
+    token_list_cell* cur_cell = p_t_list->first;
+    token_list_cell* next_cell;
+    while (cur_cell != NULL)
+    {
+        free_token(cur_cell->data);
+        next_cell = cur_cell->next;
+        free(cur_cell);
+        cur_cell = next_cell;
+    }
+    free(p_t_list);
+}
