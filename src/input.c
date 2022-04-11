@@ -38,7 +38,7 @@ token* token_from_string(char* str){
             size += 1;
         }
         var_data* p_var_data = (var_data*)(p_token->data);
-        p_var_data->name = malloc((size+1)*sizeof(char));
+        p_var_data->name = calloc(size+1, sizeof(char));
         if(p_var_data == NULL){
             printf("Error : Could not allocate memory for variable name in string_to_token");
             exit(1);
