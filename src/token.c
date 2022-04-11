@@ -34,6 +34,10 @@ token* empty_token(token_type t_type){
 }
 
 void free_token(token* p_token){
+    if (p_token->t_type == VARIABLE)
+    {
+        free(((var_data*)p_token->data)->name);
+    }
     free(p_token->data);
     free(p_token);
 }
