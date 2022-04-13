@@ -44,9 +44,9 @@ token* token_from_string(char* str){
         memcpy(p_var_data->name, str, size);
         p_var_data->size_name = size+1;
     } else if(isdigit(str[0])){ // it is a number
-         p_token = empty_token(NUMBER);
-         //printf("%d \n", scanf("%d%s", str));
-         ((num_data*)p_token->data)->value = strtol(str, &str, 10);
+        p_token = empty_token(NUMBER);
+        //printf("%d \n", scanf("%d%s", str));
+        ((num_data*)p_token->data)->value = strtol(str, &str, 10);
     }
     
     return p_token;
