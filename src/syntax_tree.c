@@ -68,19 +68,31 @@ syntax_tree* read_expression(token_list* p_list){
     
 }
 
-void print_syntax_tree(syntax_tree* tree){
+void print_syntax_tree_core(syntax_tree* tree, int depth, int* rec)
+{
+    int i;
+    if(tree == NULL){
+        return;
+    }
+    printf("\t");
+    for(int i = 0; i < depth; i++){
+        if(i == depth - 1){
+            printf("%s\u2014\u2014\u2014",rec[depth-1]?"\u0371":"\u221F");
+        }
+        else
+            printf("%s   ",rec[i]?"\u23B8":"  ");
+    }
     print_token(tree->root);
-    putchar(' ');
+    putchar('\n');
+    rec[depth]=1;
+    print_syntax_tree_core(tree->left_node,depth+1, rec);
+    rec[depth]=0;
+    print_syntax_tree_core(tree->right_node,depth+1, rec);
+}
 
-    if (tree->left_node != NULL){
-        print_syntax_tree(tree->left_node);
-        putchar(' ');
-    }
-
-    if(tree->right_node != NULL){
-        print_syntax_tree(tree->right_node);
-        putchar(' ');
-    }
+void print_syntax_tree(syntax_tree* tree){
+    int rec[1000006];
+    print_syntax_tree_core(tree, 0, rec);
 }
 
 void free_tree(syntax_tree* tree){
