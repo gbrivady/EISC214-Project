@@ -1,5 +1,7 @@
 add_executable(testApp test.c
-../src/input.c ../src/token.c)
+../src/input.c ../src/token.c
+../src/syntax_tree.c
+../src/optimise.c)
 
 target_include_directories(testApp PRIVATE ${PROJECT_SOURCE_DIR}/inc
 )
