@@ -92,7 +92,11 @@ void print_token_operation(token* p_token){
 }
 
 void print_token_variable(token* p_token){
-    printf("VARIABLE:%s", ((var_data*)p_token->data)->name);
+    printf("VARIABLE:");
+    if(((var_data*)p_token->data)->is_negative){
+        putchar('-');
+    }
+    printf("%s", ((var_data*)p_token->data)->name);
 }
 
 void print_token_number(token* p_token){

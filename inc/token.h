@@ -19,6 +19,7 @@ typedef enum ope_data{ADD, SUB, MUL} ope_data;
 typedef struct var_data{
     char* name;
     unsigned int size_name;
+    bool is_negative;
 } var_data;
 
 typedef struct num_data{
