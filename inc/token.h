@@ -6,7 +6,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 
-typedef enum token_type {BRACKET, OPERATION, VARIABLE, NUMBER} token_type;
+typedef enum token_type {OPERATION = -1, BRACKET = 0, VARIABLE, NUMBER} token_type;
 
 typedef struct token
 {
@@ -56,7 +56,7 @@ void append_token(token_list* p_list, token* p_token);
 
 void print_token_list(token_list* p_t_list);
 
-void free_token_list(token_list* p_t_list);
+void free_token_list(token_list* p_t_list, bool free_content);
 
 
 #endif
