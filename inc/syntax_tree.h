@@ -15,5 +15,6 @@ syntax_tree* read_expression(token_list* t_list);
 
 void print_syntax_tree(syntax_tree* tree);
 void free_tree(syntax_tree* tree);
+syntax_tree* leaf_of_token(token* p_token);
 
 #endif
