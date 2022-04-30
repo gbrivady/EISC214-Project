@@ -97,6 +97,7 @@ token_list* read_tokens(char* str){
         case VARIABLE:
             //one less, as the \0 at the end does not exist in the string
             str += ((var_data*)p_token->data)->size_name-1;
+            ((var_data*)p_token->data)->is_negative = false;
             break;
         case NUMBER:
             //str shift is already done in strtol within token_from_string

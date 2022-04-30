@@ -91,7 +91,7 @@ void print_syntax_tree_core(syntax_tree* tree, int depth, int* rec)
 }
 
 void print_syntax_tree(syntax_tree* tree){
-    int rec[1000006];
+    int rec[1006];
     print_syntax_tree_core(tree, 0, rec);
 }
 

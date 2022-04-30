@@ -19,36 +19,42 @@ void squash_r(syntax_tree** p_tree){
 void optimise_tree(syntax_tree* tree);
 
 //assumes we are already on a "operation" node
+//Does in advance operations on constants
 int simplify_constants(syntax_tree** p_tree){
     int value;
+    int value_l;
+    int value_r;
     ope_data* operation = (ope_data*) (*p_tree)->root->data;
     if((*p_tree)->left_node->root->t_type == NUMBER
     && (*p_tree)->right_node->root->t_type == NUMBER){
+        value_l = ((num_data*)((*p_tree)->left_node->root->data))->value;
+        value_r = ((num_data*)((*p_tree)->right_node->root->data))->value;
         switch (*operation)
         {
         case ADD:
-            value = ((num_data*)((*p_tree)->right_node->root->data))->value 
-            + ((num_data*)((*p_tree)->left_node->root->data))->value;
+            value = value_l + value_r;
             break;
         case SUB:
-            value = ((num_data*)((*p_tree)->left_node->root->data))->value 
-            - ((num_data*)((*p_tree)->right_node->root->data))->value;
+            value = value_l - value_r;
             break;
         case MUL:
-            value = ((num_data*)((*p_tree)->right_node->root->data))->value 
-            * ((num_data*)((*p_tree)->left_node->root->data))->value;
+            value = value_l * value_r;
             break;
         default:
-            return 1;
+            return 0;
         }
 
+        // We remove the operation node, and one number
+        // Then we move the second number and replace its value ( for memory management )
         squash_l(p_tree);
-        (*p_tree)->root;
+        ((num_data*)(*p_tree)->root->data)->value = value;
+        return 1;
     }
-    return 1;
+    return 0;
 }
 
 //assumes we are already working on a "operation" node
+// Removes operations : 0 - [tree], [tree] - 0, 0 + [tree], and 1 * [tree]
 int neutral_elements(syntax_tree** p_tree){
     syntax_tree* temp_tree;
     ope_data* operation = (ope_data*) (*p_tree)->root->data;
@@ -83,6 +89,8 @@ int neutral_elements(syntax_tree** p_tree){
     return 1;
 }
 
+
+//Multiplies everything in the tree by -1
 void negate_tree(syntax_tree* tree){
     if(tree->left_node){
         negate_tree(tree->left_node);
@@ -93,6 +101,6 @@ void negate_tree(syntax_tree* tree){
     if(tree->root->t_type == NUMBER){
         ((num_data*) tree->root->data)->value *= -1;
     }else if(tree->root->t_type == VARIABLE){
-        ((var_data*) tree->root->data)->is_negative = true;
+        ((var_data*) tree->root->data)->is_negative = !((var_data*) tree->root->data)->is_negative;
     }
 }

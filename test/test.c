@@ -117,6 +117,9 @@ int main(int argc, char const *argv[])
     tree = read_expression(list);
     print_syntax_tree(tree);
     putchar('\n');
+    simplify_constants(&(tree->left_node));
+    print_syntax_tree(tree);
+    putchar('\n');
     free_tree(tree);
     free_token_list(list, true);
     return 0;
