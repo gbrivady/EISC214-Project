@@ -97,30 +97,37 @@ int main(int argc, char const *argv[])
     // print_syntax_tree(read_expression(read_tokens("2+1-3*8+9")));
     // putchar('\n');
     // token_list* list = read_tokens("dzae + (1-3) * 8 + 9 ");
-    token_list* list = read_tokens("0 + (1-3) * 1 + 9 * zz");
+    token_list* list = read_tokens("0 + (1-3) * 1 + 9.5 * zz");
     syntax_tree* tree = read_expression(list);
     print_syntax_tree(tree);
     putchar('\n');
 
-    negate_tree(tree);
+    optimise_tree(&tree);
     print_syntax_tree(tree);
-    putchar('\n');
+    // negate_tree(tree);
+    // print_syntax_tree(tree);
+    // putchar('\n');
 
-    neutral_elements(&(tree->left_node));
-    neutral_elements(&(tree->left_node));
-    print_syntax_tree(tree);
+    // neutral_elements(&(tree->left_node));
+    // neutral_elements(&(tree->left_node));
+    // print_syntax_tree(tree);
     putchar('\n');
     free_tree(tree);
     free_token_list(list, true);
 
-    list = read_tokens("(1-3) + bb ");
-    tree = read_expression(list);
-    print_syntax_tree(tree);
+    // list = read_tokens("(1-3) + bb ");
+    // tree = read_expression(list);
+    // print_syntax_tree(tree);
+    // putchar('\n');
+    // simplify_constants(&(tree->left_node));
+    // print_syntax_tree(tree);
+    // putchar('\n');
+    // free_tree(tree);
+    // free_token_list(list, true);
+
+    range a = {1, 3};
+    range b = {10, 11};
+    print_range(negate_range(a));
     putchar('\n');
-    simplify_constants(&(tree->left_node));
-    print_syntax_tree(tree);
-    putchar('\n');
-    free_tree(tree);
-    free_token_list(list, true);
     return 0;
 }

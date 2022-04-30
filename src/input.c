@@ -43,10 +43,12 @@ token* token_from_string(char* str){
         }
         memcpy(p_var_data->name, str, size);
         p_var_data->size_name = size+1;
+        p_var_data->is_negative = false;
     } else if(isdigit(str[0])){ // it is a number
         p_token = empty_token(NUMBER);
         //printf("%d \n", scanf("%d%s", str));
-        ((num_data*)p_token->data)->value = strtol(str, &str, 10);
+        ((num_data*)p_token->data)->value.x = strtod(str, &str);
+        ((num_data*)p_token->data)->value.y = ((num_data*)p_token->data)->value.x;
     }
     
     return p_token;
@@ -97,11 +99,10 @@ token_list* read_tokens(char* str){
         case VARIABLE:
             //one less, as the \0 at the end does not exist in the string
             str += ((var_data*)p_token->data)->size_name-1;
-            ((var_data*)p_token->data)->is_negative = false;
             break;
         case NUMBER:
             //str shift is already done in strtol within token_from_string
-            while (isdigit(str[0]))
+            while (isdigit(str[0]) || (str[0] == '.'))
             {
                 str += 1;
             }

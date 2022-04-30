@@ -100,7 +100,8 @@ void print_token_variable(token* p_token){
 }
 
 void print_token_number(token* p_token){
-    printf("NUMBER:%d", ((num_data*)p_token->data)->value);
+    printf("NUMBER:");
+    print_range(((num_data*)p_token->data)->value);
 }
 
 

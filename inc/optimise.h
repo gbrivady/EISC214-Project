@@ -3,11 +3,11 @@
 
 #include "syntax_tree.h"
 
-void optimise_tree(syntax_tree* tree);
+void optimise_tree(syntax_tree** p_tree);
 
-int simplify_constants(syntax_tree** p_tree);
+void simplify_constants(syntax_tree** p_tree);
 
-int neutral_elements(syntax_tree** tree);
+void neutral_elements(syntax_tree** tree);
 
 void negate_tree(syntax_tree* tree);
 
