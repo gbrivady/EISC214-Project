@@ -2,7 +2,8 @@
 #define RANGE_H
 
 #include <stdio.h>
-
+#include <stdlib.h>
+#include <string.h>
 struct range
 {
     double x;
@@ -22,5 +23,7 @@ range inv_range(range a);
 range div_range(range a, range b);
 
 void print_range(range a);
+
+range range_of_string(char* str);
 
 #endif

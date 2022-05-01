@@ -2,7 +2,9 @@ add_executable(app main.c
                    token.c
                    input.c
                    syntax_tree.c
-                   optimise.c)
+                   optimise.c
+                   range.c
+                   evaluate.c)
 
 target_include_directories(app PRIVATE ${PROJECT_SOURCE_DIR}/inc
 )

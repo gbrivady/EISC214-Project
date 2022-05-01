@@ -61,7 +61,7 @@ void print_token(token* p_token){
         print_token_number(p_token);
         break;
     default:
-        printf("Error : Unrecognised token type.");
+        printf("Error : Unrecognised token type %d", p_token->t_type);
         break;
     }
 }

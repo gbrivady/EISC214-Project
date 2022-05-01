@@ -4,6 +4,7 @@
 #include "token.h"
 #include "syntax_tree.h"
 #include "optimise.h"
+#include "evaluate.h"
 
 void test_str2tok(){
 
@@ -112,6 +113,11 @@ int main(int argc, char const *argv[])
     // neutral_elements(&(tree->left_node));
     // print_syntax_tree(tree);
     putchar('\n');
+
+    char** name_array = init_name_array();
+    range range_array[100];
+    print_range(evaluate_tree(&tree, name_array, range_array));
+    putchar('\n');
     free_tree(tree);
     free_token_list(list, true);
 
@@ -125,9 +131,42 @@ int main(int argc, char const *argv[])
     // free_tree(tree);
     // free_token_list(list, true);
 
-    range a = {1, 3};
-    range b = {10, 11};
-    print_range(negate_range(a));
-    putchar('\n');
+    // range a = {1, 3};
+    // range b = {10, 11};
+    // print_range(negate_range(a));
+    // putchar('\n');
+
+    // print_range(range_of_string("[4.2132122;3213.321]"));
+    // putchar('\n');
+
+    // char** name_array = init_name_array();
+    // range range_array[100];
+    // read_variable("zz=[46;55]", name_array, range_array);
+    // printf("%s=", name_array[0]);
+    // print_range(range_array[0]);
+    // putchar('\n');    
+    
+    // read_variable("zzuu=[49;55]", name_array, range_array);
+    // printf("%s=", name_array[1]);
+    // print_range(range_array[1]);
+    // putchar('\n');
+
+    // print_range(find_value("zz", name_array, range_array));    
+    // putchar('\n');
+    // print_range(find_value("zzuu", name_array, range_array));
+    // putchar('\n');
+    // print_range(find_value("zz", name_array, range_array));
+    // putchar('\n');    
+    // print_range(find_value("zaz", name_array, range_array));
+    // putchar('\n');
+    for (int i = 0; i < 100; i++)
+    {
+        if(name_array[i])
+            free(name_array[i]);
+        else
+            break;
+    }
+    free(name_array);
+    
     return 0;
 }

@@ -66,3 +66,18 @@ range div_range(range a, range b){
 void print_range(range a){
     printf("[%lf; %lf]", a.x, a.y);
 }
+
+range range_of_string(char* str){
+    if (str[0] != '[')
+    {
+        exit(1);
+    }
+    range a;
+    a.x = strtod(str+1, &str);
+    if (str[0] != ';'){
+        exit(1);
+    }
+    a.y = strtod(str+1, &str);
+    return a;
+    
+}
