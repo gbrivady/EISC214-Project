@@ -1,6 +1,7 @@
 #include "input.h"
 
-token* token_from_string(char* str){
+token* token_from_string(char** p_str){
+    char* str = *p_str;
     token* p_token;
     void* token_data;
     // handles single char tokens : operation and brackets
@@ -47,7 +48,7 @@ token* token_from_string(char* str){
     } else if(isdigit(str[0])){ // it is a number
         p_token = empty_token(NUMBER);
         //printf("%d \n", scanf("%d%s", str));
-        ((num_data*)p_token->data)->value.x = strtod(str, &str);
+        ((num_data*)p_token->data)->value.x = strtod(str, p_str);
         ((num_data*)p_token->data)->value.y = ((num_data*)p_token->data)->value.x;
     }
     
@@ -67,7 +68,7 @@ token_list* read_tokens(char* str){
     }
     while (str != NULL && *str != '\0') 
     {
-        p_token = token_from_string(str);
+        p_token = token_from_string(&str);
         if (p_token == NULL)
         {
             //End of an open bracket
@@ -101,12 +102,10 @@ token_list* read_tokens(char* str){
             str += ((var_data*)p_token->data)->size_name-1;
             break;
         case NUMBER:
-            //str shift is already done in strtol within token_from_string
-            while (isdigit(str[0]) || (str[0] == '.'))
-            {
-                str += 1;
-            }
-            //no it is not you idiot
+            // while (isdigit(str[0]) || (str[0] == '.' || ))
+            // {
+            //     str += 1;
+            // }
             break;
         default:
             break;

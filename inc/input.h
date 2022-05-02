@@ -6,7 +6,7 @@
 #include <string.h>
 #include "token.h"
 
-token* token_from_string(char* str);
+token* token_from_string(char** p_str);
 
 token_list* read_tokens(char* str);
 
