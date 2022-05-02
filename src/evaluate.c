@@ -78,6 +78,8 @@ range evaluate_tree(syntax_tree** p_tree, char** name_array, range* range_array)
         return sub_range(value_l, value_r);
     case MUL:
         return mul_range(value_l, value_r);
+    case DIV:
+        return div_range(value_l, value_r);
     default:
         exit(1);
     }

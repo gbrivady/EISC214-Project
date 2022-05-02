@@ -16,7 +16,7 @@ typedef struct token
     void* data;
 } token;
 
-typedef enum ope_data{ADD, SUB, MUL} ope_data;
+typedef enum ope_data{ADD, SUB, MUL, DIV} ope_data;
 
 typedef struct var_data{
     char* name;

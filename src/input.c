@@ -25,6 +25,10 @@ token* token_from_string(char** p_str){
         p_token = empty_token(OPERATION);
         *(ope_data*)(p_token->data) = MUL;
         break;
+    case '/' :
+        p_token = empty_token(OPERATION);
+        *(ope_data*)(p_token->data) = DIV;
+        break;
     }
 
     //TODO : SSCANF to scan functions/reserved names

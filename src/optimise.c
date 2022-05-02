@@ -60,6 +60,9 @@ void simplify_constants(syntax_tree** p_tree){
         case MUL:
             value = mul_range(value_l, value_r);
             break;
+        case DIV:
+            value = div_range(value_l, value_r);
+            break;
         default:
             return;
         }

@@ -3,6 +3,8 @@
 
 #include "token.h"
 
+#define MAX_PRIORITY 2
+
 typedef struct syntax_tree
 {
     token* root;

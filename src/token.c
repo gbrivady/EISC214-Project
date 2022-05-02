@@ -85,6 +85,9 @@ void print_token_operation(token* p_token){
     case MUL:
         printf("*");
         break;
+    case DIV:
+        printf("/");
+        break;
     default:
         printf("<?>");
         break;

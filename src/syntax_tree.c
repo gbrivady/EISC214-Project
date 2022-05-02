@@ -20,7 +20,7 @@ syntax_tree* eat_token(token_list_cell** p_cell){
 }
 
 int get_priority(ope_data operation){
-    if (operation == MUL)
+    if (operation == MUL || operation == DIV)
     {
         return 1;
     }
@@ -31,7 +31,7 @@ int get_priority(ope_data operation){
 }
 
 syntax_tree* read_node(token_list_cell** p_cell, int cur_ope_priority){
-    if (cur_ope_priority == 2)
+    if (cur_ope_priority == MAX_PRIORITY)
     {
         return eat_token(p_cell);
     }
