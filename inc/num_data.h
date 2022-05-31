@@ -1,14 +1,21 @@
-#ifndef RANGE_H
-#define RANGE_H
+#ifndef NUM_DATA_H
+#define NUM_DATA_H
 
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <mpfr.h>
+
 struct range
 {
-    double x;
-    double y;
+    mpfr_t x;
+    mpfr_t y;
 } typedef range;
+
+struct num_data
+{
+    range value;
+} typedef num_data;
 
 range add_range(range a, range b);
 

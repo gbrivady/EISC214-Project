@@ -6,7 +6,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 
-#include "range.h"
+#include "num_data.h"
 
 typedef enum token_type {OPERATION = -1, BRACKET = 0, VARIABLE, NUMBER} token_type;
 
@@ -24,9 +24,9 @@ typedef struct var_data{
     bool is_negative;
 } var_data;
 
-typedef struct num_data{
-    range value;
-} num_data;
+// typedef struct num_data{
+//     range value;
+// } num_data;
 
 int size_of_data(token_type t_type);
 

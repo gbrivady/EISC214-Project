@@ -1,6 +1,7 @@
 #include "optimise.h"
 
 //utility functions
+
 void squash_l(syntax_tree** p_tree){
     syntax_tree* temp;
     temp = *p_tree;
@@ -33,7 +34,9 @@ void optimise_tree(syntax_tree** p_tree){
     if ((*p_tree)->root->t_type == NUMBER){
         return;
     }
-    simplify_constants(p_tree);
+    if((*p_tree)->left_node && (*p_tree)->right_node){
+        simplify_constants(p_tree);
+    }
     return;
 }
 
@@ -70,6 +73,8 @@ void simplify_constants(syntax_tree** p_tree){
         // We remove the operation node, and one number
         // Then we move the second number and replace its value ( for memory management )
         squash_l(p_tree);
+        mpfr_clear(((num_data*)(*p_tree)->root->data)->value.x);
+        mpfr_clear(((num_data*)(*p_tree)->root->data)->value.y);
         ((num_data*)(*p_tree)->root->data)->value = value;
         return;
     }
@@ -85,9 +90,9 @@ void neutral_elements(syntax_tree** p_tree){
     if((*p_tree)->left_node->root->t_type == NUMBER){
         operation = (ope_data*) (*p_tree)->root->data;
         value = (num_data*)((*p_tree)->left_node->root->data);
-        if((value->value.x == 1 && *operation == MUL) 
-        || (value->value.x == 0 && *operation == ADD)
-        || (value->value.x == 0 && *operation == SUB))
+        if((mpfr_cmp_si(value->value.x, 1) == 0 && *operation == MUL) 
+        || (mpfr_zero_p(value->value.x) && *operation == ADD)
+        || (mpfr_zero_p(value->value.x) && *operation == SUB))
         {
             //we destroy the left tree, and move its roots up
             squash_l(p_tree);
@@ -102,9 +107,9 @@ void neutral_elements(syntax_tree** p_tree){
     if((*p_tree)->right_node->root->t_type == NUMBER){
         operation = (ope_data*) (*p_tree)->root->data;
         value = (num_data*)((*p_tree)->right_node->root->data);
-        if((value->value.x == 1 && *operation == MUL) 
-        || (value->value.x == 0 && *operation == ADD)
-        || (value->value.x == 0 && *operation == SUB))
+        if((mpfr_cmp_si(value->value.x, 1) == 0 && *operation == MUL) 
+        || (mpfr_zero_p(value->value.x) && *operation == ADD)
+        || (mpfr_zero_p(value->value.x) && *operation == SUB))
         {
             squash_r(p_tree);
             return;

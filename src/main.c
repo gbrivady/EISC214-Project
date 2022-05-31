@@ -3,6 +3,12 @@
 int main(int argc, char const *argv[])
 {
     char input_buffer[200];
+
+    int precision;
+    printf("Input wanted number of bits of precision [%ld - %ld] :", MPFR_PREC_MIN, MPFR_PREC_MAX/8);
+    scanf("%d", &precision);
+    mpfr_set_default_prec(precision);
+
     printf("Input expression : ");
     scanf("%s", input_buffer);
 
@@ -42,6 +48,7 @@ int main(int argc, char const *argv[])
     free(name_array);
     free_tree(tree);
     free_token_list(list, true);
-    
+
+    mpfr_free_cache();
     return 0;
 }

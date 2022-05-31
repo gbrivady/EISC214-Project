@@ -32,7 +32,7 @@ token* token_from_string(char** p_str){
     }
 
     //TODO : SSCANF to scan functions/reserved names
-    if (isalpha(str[0])) // then it is a variable
+    if (isalpha(str[0]) && str[0] != '~') // then it is a variable
     {
         p_token = empty_token(VARIABLE);
         unsigned int size = 0;
@@ -49,11 +49,24 @@ token* token_from_string(char** p_str){
         memcpy(p_var_data->name, str, size);
         p_var_data->size_name = size+1;
         p_var_data->is_negative = false;
-    } else if(isdigit(str[0])){ // it is a number
+    } else if(isdigit(str[0]) || str[0]=='~'){ // it is a number
+        if (str[0]=='~')
+        {
+            str[0] = '-';
+        }
+        
         p_token = empty_token(NUMBER);
         //printf("%d \n", scanf("%d%s", str));
-        ((num_data*)p_token->data)->value.x = strtod(str, p_str);
-        ((num_data*)p_token->data)->value.y = ((num_data*)p_token->data)->value.x;
+        num_data* token_data = ((num_data*)p_token->data);
+
+        mpfr_init(token_data->value.x);
+        mpfr_init(token_data->value.y);
+
+        mpfr_strtofr(token_data->value.x, str, p_str, 10, MPFR_RNDN);
+        mpfr_set(token_data->value.y, token_data->value.x, MPFR_RNDN);
+
+        // token_data->value.x = strtod(str, p_str);
+        // token_data->value.y = ((num_data*)p_token->data)->value.x;
     }
     
     return p_token;

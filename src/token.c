@@ -41,6 +41,12 @@ void free_token(token* p_token){
     if (p_token->t_type == BRACKET){
         free_token_list(*(token_list**)p_token->data, true);
     }
+    if (p_token->t_type == NUMBER)
+    {
+        mpfr_clear(((num_data*)p_token->data)->value.x);
+        mpfr_clear(((num_data*)p_token->data)->value.y);
+    }
+    
     free(p_token->data);
     free(p_token);
 }

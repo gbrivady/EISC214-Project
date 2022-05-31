@@ -37,7 +37,7 @@ range find_value(char* name, char** name_array, range* range_array){
     for (i = 0; i < 100; i++){
         if(name_array[i] == NULL){
             char str[100];
-            printf("Variable %s not found. Enter value range :\n \t");
+            printf("\n\tVariable %s not found. Enter value range :\n\t");
             scanf("%s", str);
             read_variable(str, name_array, range_array);
             break;
