@@ -27,6 +27,7 @@ int main(int argc, char const *argv[])
     char** name_array = init_name_array();
     range range_array[100];
 
+    //Reads variable values
     while (1)
     {
         scanf("%s", input_buffer);
@@ -34,10 +35,12 @@ int main(int argc, char const *argv[])
             break;
         read_variable(input_buffer, name_array, range_array);
     }
+
     printf("Evaluation of tree : ");
     print_range(evaluate_tree(&tree, name_array, range_array));
     putchar('\n');
 
+    //Frees everything
     for (int i = 0; i < 100; i++)
     {
         if(name_array[i])

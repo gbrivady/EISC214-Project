@@ -31,30 +31,38 @@ int get_priority(ope_data operation){
 }
 
 syntax_tree* read_node(token_list_cell** p_cell, int cur_ope_priority){
+    //If the current operation is the most important one, aka we are reading
+    //a number on the right-side of a mul/div, we only read one token
     if (cur_ope_priority == MAX_PRIORITY)
     {
         return eat_token(p_cell);
     }
 
+    //Else there could be more important operation down the line, so we increase priority and
+    //look for them
     syntax_tree* cur_node = read_node(p_cell, cur_ope_priority+1);
-    if (!*p_cell)
+    if (!*p_cell) //we have reached the end of the token list
     {
         return cur_node;
     }
     
     syntax_tree* new_node;
+    //While the operation encountered have the same priority, operation priority is from left to right
     while (*p_cell && get_priority(*(ope_data*) (*p_cell)->data->data) == cur_ope_priority)
     {
 
+        //Creates a new node with current token
         new_node = eat_token(p_cell);
 
+        //This token is more to the right in the expression : as such, the current node need
+        //to be evaluated prior to the new node, so we put the current node as the left leaf.
         new_node->left_node = cur_node;
         cur_node = new_node;
 
         new_node = read_node(p_cell, cur_ope_priority+1);
+
         cur_node->right_node = new_node;
     }
-
     return cur_node;
     
 }
@@ -65,7 +73,6 @@ syntax_tree* read_expression(token_list* p_list){
     syntax_tree* return_tree =  read_node(p_cell, 0);
     free(p_cell);
     return return_tree;
-    
 }
 
 void print_syntax_tree_core(syntax_tree* tree, int depth, int* rec)
@@ -91,6 +98,7 @@ void print_syntax_tree_core(syntax_tree* tree, int depth, int* rec)
 }
 
 void print_syntax_tree(syntax_tree* tree){
+    //buffer for tabulations
     int rec[1006];
     print_syntax_tree_core(tree, 0, rec);
 }

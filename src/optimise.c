@@ -1,7 +1,6 @@
 #include "optimise.h"
 
 //utility functions
-
 void squash_l(syntax_tree** p_tree){
     syntax_tree* temp;
     temp = *p_tree;
@@ -20,9 +19,11 @@ void squash_r(syntax_tree** p_tree){
 void optimise_tree(syntax_tree** p_tree){
     if (((*p_tree)->root->t_type == NUMBER) || ((*p_tree)->root->t_type == VARIABLE))
     {
+        //A variable of expression tree cannot be simplified
         return;
     }
 
+    //Tries to optimise left and right leafs first
     if ((*p_tree)->left_node)
     {
         optimise_tree(&(*p_tree)->left_node);
@@ -30,13 +31,18 @@ void optimise_tree(syntax_tree** p_tree){
     if((*p_tree)->right_node){
         optimise_tree(&(*p_tree)->right_node);
     }
+
+    //Get rids of all the operations : 0+ , 0-, 1*, etc...
     neutral_elements(p_tree);
-    if ((*p_tree)->root->t_type == NUMBER){
+
+    if (((*p_tree)->root->t_type == NUMBER) || ((*p_tree)->root->t_type == VARIABLE))
+    {
+        //Nothing to simplify on this root
         return;
     }
-    if((*p_tree)->left_node && (*p_tree)->right_node){
-        simplify_constants(p_tree);
-    }
+
+    //Run operations in case both leafs were constants
+    simplify_constants(p_tree);
     return;
 }
 
@@ -70,8 +76,9 @@ void simplify_constants(syntax_tree** p_tree){
             return;
         }
 
-        // We remove the operation node, and one number
-        // Then we move the second number and replace its value ( for memory management )
+        // We remove the operation node, and the number on the left leaf
+        // Then we set the right leaf as root and replace its value
+        // Only use already-allocated nodes & token type to easily prevent leaks
         squash_l(p_tree);
         mpfr_clear(((num_data*)(*p_tree)->root->data)->value.x);
         mpfr_clear(((num_data*)(*p_tree)->root->data)->value.y);
@@ -86,7 +93,7 @@ void neutral_elements(syntax_tree** p_tree){
     syntax_tree* temp_tree;
     ope_data* operation; 
     num_data* value;
-    //if we have any of : 1* , 0+, 0- on the left tree
+    //if we have any of : 1* , 0+, 0- on the left leaf
     if((*p_tree)->left_node->root->t_type == NUMBER){
         operation = (ope_data*) (*p_tree)->root->data;
         value = (num_data*)((*p_tree)->left_node->root->data);
@@ -94,16 +101,16 @@ void neutral_elements(syntax_tree** p_tree){
         || (mpfr_zero_p(value->value.x) && *operation == ADD)
         || (mpfr_zero_p(value->value.x) && *operation == SUB))
         {
-            //we destroy the left tree, and move its roots up
+            //we destroy the left leaft, and set the right one as root
             squash_l(p_tree);
             if(*operation == SUB) { 
-                //if we replace 0- by something, we also need to negate anything in the left tree
+                //if we replace 0- by something, we also need to negate anything left in the right leaf
                 negate_tree(*p_tree); 
             }
             return;
         }
     }
-    // same as above, but on the right tree. Also, no special case (such as -0)
+    // same as above, but on the right leaf. Also, no special case (such as -0)
     if((*p_tree)->right_node->root->t_type == NUMBER){
         operation = (ope_data*) (*p_tree)->root->data;
         value = (num_data*)((*p_tree)->right_node->root->data);

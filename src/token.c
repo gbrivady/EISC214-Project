@@ -113,6 +113,8 @@ void print_token_number(token* p_token){
     print_range(((num_data*)p_token->data)->value);
 }
 
+//Function to operate on token lists
+
 
 void append_token(token_list* p_list, token* p_token){
     token_list_cell* new_cell = malloc(sizeof(token_list_cell));

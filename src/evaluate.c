@@ -20,9 +20,10 @@ void read_variable(char* str, char** name_array, range* range_array){
         
     }
     int j;
+    //format is name=[lower_value;upper_value]
     for (j = 0; j < strlen(str); j++)
     {
-        if(str[j] == '=')
+        if(str[j] == '=') //when = is reached, name is over
             break;
     }
     char* var_name = malloc(sizeof(char)*(j+1));
@@ -56,12 +57,15 @@ range evaluate_tree(syntax_tree** p_tree, char** name_array, range* range_array)
         return ((num_data*)p_token->data)->value;
     }
     if (p_token->t_type == VARIABLE){
-        //replaces the variable by its value
+        //replaces the variable by its value, by looking in the array of declared variables
         value_l = find_value(((var_data*)p_token->data)->name, name_array, range_array);
         if(((var_data*)p_token->data)->is_negative)
             value_l = negate_range(value_l);
         return value_l;
     }
+
+    //if the root is not a number or a variable, then it is an operation
+    //so we evaluate both its leafs, and run the operation
     if ((*p_tree)->left_node)
     {
         value_l = evaluate_tree(&(*p_tree)->left_node, name_array, range_array);
@@ -83,7 +87,4 @@ range evaluate_tree(syntax_tree** p_tree, char** name_array, range* range_array)
     default:
         exit(1);
     }
-
-    // We remove the operation node, and one number
-    // Then we move the second number and replace its value ( for memory management )
 }

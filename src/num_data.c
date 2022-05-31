@@ -13,8 +13,6 @@ range sub_range(range a, range b){
     range c;
     mpfr_init(c.x);
     mpfr_init(c.y);
-    // c.x = a.x - b.y;
-    // c.y = a.y - b.x;
     mpfr_sub(c.x, a.x, b.y, MPFR_RNDN);
     mpfr_sub(c.y, a.y, b.x, MPFR_RNDN);
     return c;
@@ -54,9 +52,6 @@ range negate_range(range a){
     mpfr_neg(a.x, a.x, MPFR_RNDN);
     mpfr_neg(a.y, a.y, MPFR_RNDN);
     mpfr_swap(a.x, a.y);
-    // double temp = a.x;
-    // a.x = a.y;
-    // a.y = temp;
     return a;
 }
 
@@ -66,8 +61,6 @@ range inv_range(range a){
     mpfr_init(c.y);
     mpfr_pow_si(c.x, a.x, -1, MPFR_RNDN);
     mpfr_pow_si(c.y, a.y, -1, MPFR_RNDN);
-    // double inv1 = 1/a.x;
-    // double inv2 = 1/a.y;
     if(mpfr_lessequal_p(c.x, c.y)){
         return c;
     }
@@ -94,7 +87,6 @@ range range_of_string(char* str){
     mpfr_init(a.x);
     mpfr_init(a.y);
     mpfr_strtofr(a.x, str+1, &str, 10, MPFR_RNDN);
-    // a.x = strtod(str+1, &str);
     if (str[0] != ';'){
         exit(1);
     }
