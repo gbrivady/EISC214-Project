@@ -30,16 +30,20 @@ int get_priority(ope_data operation){
     }
 }
 
+/**
+ * @brief Handles the read of successive operations, while maintaining correct priority orders.
+ * Explained in another file.
+ * 
+ * @param p_cell 
+ * @param cur_ope_priority 
+ * @return syntax_tree* 
+ */
 syntax_tree* read_node(token_list_cell** p_cell, int cur_ope_priority){
-    //If the current operation is the most important one, aka we are reading
-    //a number on the right-side of a mul/div, we only read one token
     if (cur_ope_priority == MAX_PRIORITY)
     {
         return eat_token(p_cell);
     }
 
-    //Else there could be more important operation down the line, so we increase priority and
-    //look for them
     syntax_tree* cur_node = read_node(p_cell, cur_ope_priority+1);
     if (!*p_cell) //we have reached the end of the token list
     {

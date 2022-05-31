@@ -1,3 +1,9 @@
+/**
+ * @file num_data.h
+ * @author Grégory BRIVADY
+ * @brief Handling of the data inside of number tokens
+ * 
+ */
 #ifndef NUM_DATA_H
 #define NUM_DATA_H
 
@@ -23,6 +29,12 @@ range sub_range(range a, range b);
 
 range mul_range(range a, range b);
 
+/**
+ * @brief Negates the range [a, b] to [-b, -a]
+ * 
+ * @param a 
+ * @return range 
+ */
 range negate_range(range a);
 
 range inv_range(range a);
@@ -31,6 +43,13 @@ range div_range(range a, range b);
 
 void print_range(range a);
 
+/**
+ * @brief Reads a range from a string.
+ * String format should be : [lower_bound;upped_bound] with NO leading spaces.
+ * 
+ * @param str 
+ * @return range 
+ */
 range range_of_string(char* str);
 
 #endif
