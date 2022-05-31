@@ -1,0 +1,1 @@
+gcc -o ./bin/app_mpfr -I ./inc ./src/*.c -lmpfr -lgmp
