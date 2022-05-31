@@ -43,8 +43,11 @@ int main(int argc, char const *argv[])
     //Frees everything
     for (int i = 0; i < 100; i++)
     {
-        if(name_array[i])
+        if(name_array[i]){
             free(name_array[i]);
+            mpfr_clear(range_array[i].x);
+            mpfr_clear(range_array[i].y);
+        }
         else
             break;
     }
